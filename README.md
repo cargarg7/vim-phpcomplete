@@ -2,14 +2,14 @@ This version of phpcomplete parses method's phpdoc so you can see the descriptio
 
 Requirements:
 ------------
-* Exuberant ctags: You need it to generate class tags. You can use this command to generate your tag file
+* Exuberant ctags: You need it to generate class tags.
 * Vim-Python: I've put python code in phpcomplete.vim
 
 Installation:
 -------------
 1- Copy phpcomplete.vim in your .vim/autoload/ dir
 
-2- Generate a tags file with exuberant ctags
+2- Generate a tags file with exuberant ctags. You can use this command to generate your tag file:
 ```
 #!/bin/bash
 exec ctags -f tagsFile.txt \
