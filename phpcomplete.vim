@@ -12,10 +12,18 @@
 "     phpStrings this can be even a bonus but outside of <?php?> it is not the
 "     best situation
 
-function! phpcomplete#GetPhpDoc(sccontent,f_args) " {{{
+" compile regexes for phpdoc parsing - declared as globals
 python << EOF
 import vim
 import re
+regex_desc = re.compile(r"\*(?P<desc>.+?)(?:@param|@return|\*/)", re.MULTILINE|re.DOTALL)
+regex_params = re.compile(r"@param\s+?(?P<type>.+?)\s+(?P<var>.+?)\s+(?P<desc>.+?)\n", re.MULTILINE|re.DOTALL)
+regex_return = re.compile(r"@return\s+?(?P<type>.+?)\s+(?P<desc>.+?)\n", re.MULTILINE|re.DOTALL)
+regex_throws = re.compile(r"@throws\s+?(?P<exc>.+?)\s*\n", re.MULTILINE|re.DOTALL)
+EOF
+
+function! phpcomplete#GetPhpDoc(sccontent,f_args) " {{{
+python << EOF
 content = vim.eval("a:sccontent") 
 func = vim.eval("a:f_args") 
 line = 0
@@ -46,10 +54,6 @@ for l in content:
         break
     line+=1
 # parse phpdoc for different items
-regex_desc = re.compile(r"\*(?P<desc>.+?)(?:@param|@return|\*/)", re.MULTILINE|re.DOTALL)
-regex_params = re.compile(r"@param\s+?(?P<type>.+?)\s+(?P<var>.+?)\s+(?P<desc>.+?)\n", re.MULTILINE|re.DOTALL)
-regex_return = re.compile(r"@return\s+?(?P<type>.+?)\s+(?P<desc>.+?)\n", re.MULTILINE|re.DOTALL)
-regex_throws = re.compile(r"@throws\s+?(?P<exc>.+?)\s*\n", re.MULTILINE|re.DOTALL)
 
 readableDesc = ''
 m = regex_desc.search(phpdoc)
