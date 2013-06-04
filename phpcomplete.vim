@@ -252,7 +252,7 @@ function! phpcomplete#CompletePHP(findstart, base)
 				let jfuncs = join(functions, ' ')
 				let sfuncs = split(jfuncs, 'function\s\+')
 				let c_functions = {}
-				let c_functions_doc = {}
+				let c_doc = {}
 
 				for i in sfuncs
 
@@ -273,7 +273,7 @@ function! phpcomplete#CompletePHP(findstart, base)
 
 					if f_name != ''
 						let c_functions[f_name.'('] = f_args
-						let c_functions_doc[f_name.'('] = phpdoc
+						let c_doc[f_name.'('] = phpdoc
 
 					endif
 				endfor
@@ -305,7 +305,9 @@ function! phpcomplete#CompletePHP(findstart, base)
 							\ '^\s*\zs[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*\ze')
 					if c_con != ''
 						let c_constants[c_con] = ''
+					        let c_doc[c_con] = ''
 					endif
+
 				endfor
 
 				let all_values = {}
@@ -337,7 +339,7 @@ function! phpcomplete#CompletePHP(findstart, base)
 					else
 						let final_list +=
 								\ [{'word':substitute(i, '.*::', '', ''),
-								\   'info':i.all_values[i].')'.c_functions_doc[i],
+								\   'info':i.all_values[i].')'.c_doc[i],
 								\   'kind':'f'}]
 					endif
 				endfor
